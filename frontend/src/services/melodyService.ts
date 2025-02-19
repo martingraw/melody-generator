@@ -15,7 +15,7 @@ interface MelodyResponse {
 export const generateMelody = async (params: MelodyParams): Promise<MelodyResponse> => {
   try {
     console.log('Sending request with params:', params);
-    const response = await axios.post('/.netlify/functions/generate_melody', params);
+    const response = await axios.post('/.netlify/functions/generate-melody', params);
     console.log('Received response:', response.data);
     return response.data;
   } catch (error: any) {
