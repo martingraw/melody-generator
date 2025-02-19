@@ -1,12 +1,20 @@
-from http.server import BaseHTTPRequestHandler
-from music21 import scale
 import json
 import random
 
+def log_error(error_msg):
+    print(f"Error in generate_melody: {error_msg}")
+
 def get_scale_notes(key: str) -> list:
-    # Create a major scale based on the key
-    major_scale = scale.MajorScale(key)
-    return [str(p) for p in major_scale.getPitches()[:8]]
+    # Simplified scale generation without music21
+    scales = {
+        'C': ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5'],
+        'G': ['G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F#5', 'G5'],
+        'D': ['D4', 'E4', 'F#4', 'G4', 'A4', 'B4', 'C#5', 'D5'],
+        'A': ['A4', 'B4', 'C#5', 'D5', 'E5', 'F#5', 'G#5', 'A5'],
+        'E': ['E4', 'F#4', 'G#4', 'A4', 'B4', 'C#5', 'D#5', 'E5'],
+        'F': ['F4', 'G4', 'A4', 'Bb4', 'C5', 'D5', 'E5', 'F5']
+    }
+    return scales.get(key, scales['C'])
 
 def get_mood_rhythm(mood: str) -> list:
     rhythms = {
@@ -21,10 +29,27 @@ def get_mood_rhythm(mood: str) -> list:
 
 def handler(event, context):
     try:
+        # Log the incoming event
+        print(f"Received event: {event}")
+        
+        # Handle OPTIONS request for CORS
+        if event.get('httpMethod') == 'OPTIONS':
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Methods': 'POST, OPTIONS'
+                },
+                'body': ''
+            }
+        
         # Parse request body
-        body = json.loads(event['body'])
+        body = json.loads(event.get('body', '{}'))
         key = body.get('key', 'C')
         mood = body.get('mood', 'Happy')
+        
+        print(f"Generating melody with key: {key}, mood: {mood}")
         
         # Get the scale notes for the selected key
         notes = get_scale_notes(key)
@@ -38,27 +63,33 @@ def handler(event, context):
             note = random.choice(notes)
             melody.append(note)
         
+        print(f"Generated melody: {melody}")
+        
         return {
             'statusCode': 200,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Headers': 'Content-Type',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS'
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Content-Type': 'application/json'
             },
             'body': json.dumps({
                 'melody_notes': melody,
-                'midi_data': ''
+                'rhythm': rhythm
             })
         }
     except Exception as e:
+        error_msg = str(e)
+        log_error(error_msg)
         return {
             'statusCode': 500,
             'headers': {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Headers': 'Content-Type',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS'
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Content-Type': 'application/json'
             },
             'body': json.dumps({
-                'error': str(e)
+                'error': error_msg
             })
         }
