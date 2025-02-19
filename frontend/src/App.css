@@ -1,0 +1,136 @@
+.melody-generator {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: linear-gradient(145deg, #1a1a2e, #16213e);
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #4ecca3;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.control-group label {
+  font-size: 1rem;
+  color: #4ecca3;
+}
+
+select, input {
+  padding: 0.75rem;
+  border: 2px solid #4ecca3;
+  border-radius: 6px;
+  background: #232741;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+select:focus, input:focus {
+  outline: none;
+  border-color: #6cf7c6;
+  box-shadow: 0 0 0 2px rgba(76, 236, 163, 0.2);
+}
+
+button {
+  padding: 1rem 2rem;
+  background: #4ecca3;
+  color: #1a1a2e;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+button:hover {
+  background: #6cf7c6;
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  background: #2c2c2c;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.play-button {
+  background: #7c4dff;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.play-button:hover:not(:disabled) {
+  background: #9575ff;
+  transform: scale(1.05);
+}
+
+.play-button:disabled {
+  background: #4a4a4a;
+}
+
+.melody-display {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #232741;
+  border-radius: 8px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.notes-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.note {
+  padding: 0.5rem 1rem;
+  background: #4ecca3;
+  color: #1a1a2e;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.loading {
+  text-align: center;
+  color: #4ecca3;
+}
+
+.error {
+  color: #ff6b6b;
+  text-align: center;
+  margin-top: 1rem;
+}
